@@ -45,7 +45,7 @@ shinyUI(fluidPage(
       
       wellPanel(
         h4("Manipulate the variables below"),
-        p("Numeric result displayed at right & below fig. 1",
+        p("Numeric result displayed at right & below figure 1",
                  style = "color:blue"),
         br(),
         
