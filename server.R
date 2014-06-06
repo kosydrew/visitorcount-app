@@ -38,17 +38,28 @@ shinyServer(function(input, output) {
     if(input$n.visitors) {
       data <- number_visitors[x]
     }
-    
+   
+    par(oma = c(0,0,0,0))
+    par(mar = c(5,4,0,6))
     plot(x = x,
         y = data,
         type = "p",
         col = "black",
         pch = 20, 
-        cex = 0.3, 
+        cex = 0.7, 
         xlab = "hourly observations", 
-        ylab = "",
+        ylab = "visitor count",
+        cex.lab = 1.3,
         ylim = ylim,
         xaxt = "n")
+    mtext(side = 4, 
+          text = "temperature\n% clouds", 
+          outer = TRUE, 
+          cex = 1.3, 
+          font = 1, 
+          line = -2)
+    axis(side = 4, 
+         tick = TRUE)
     
     tick <- ((ceiling(min(x/24)):floor(max(x/24)))*24)
     labels <- format(time[tick], format = "%e %b")
@@ -57,8 +68,7 @@ shinyServer(function(input, output) {
     axis(side = 1, 
          at = tick, 
          labels = labels,
-         tick = TRUE,
-         cex.axis = 0.7)
+         tick = TRUE)
     
     if(input$clouds.obs) {
       points(apr.weather.data$p.clouds[x] ~ x, 
@@ -81,6 +91,11 @@ shinyServer(function(input, output) {
     if(input$n.visitors) {
       points(data ~ x, type = "p", pch = 20, cex = 0.3, col = "black")
     }
+    
+    ##  setting the graphing parameters to normal below
+    par(oma = c(0,0,0,0))
+    par(mfrow = c(1,1))
+    par(mar = c(5,4,4,2))
     
   })
   
