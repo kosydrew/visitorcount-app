@@ -9,19 +9,23 @@ shinyUI(fluidPage(
   fluidRow(
     column(4,
       wellPanel(
-        helpText("Choose variable(s) to display"),
+        h4("Items below display in figure 1", 
+                 style = "color:blue"),
+        br(),
         
         checkboxInput("n.visitors", 
-                    label = "observed number of visitors per hour",
+                    label = "observed visitor count per hour",
                     value = TRUE),
         
         checkboxInput("n.predicted", 
-                    label = "predicted number w/ weather variables",
-                    value = TRUE),
+                    label = "model of visitor count with weather variables",
+                    value = FALSE),
+        helpText("(visitor count = temp + %clouds + time + day)"),
         
         checkboxInput("n.predicted.no.weather", 
-                    label = "predicted number w/out weather",
+                    label = "model of visitor count w/out weather variables",
                     value = FALSE),
+        helpText("(visitor count = time + day)"),
         
         checkboxInput("temp.obs", 
                       label = "temperature (celcius) in Berlin",
@@ -32,7 +36,7 @@ shinyUI(fluidPage(
                       value = FALSE),
         
         dateRangeInput("dates", 
-                    label = h4("select dates"),
+                    label = h4("select dates to display"),
                     min = "2014-04-01",
                     max = "2014-04-29",
                     start = "2014-04-01",
@@ -40,7 +44,10 @@ shinyUI(fluidPage(
         ),
       
       wellPanel(
-        h4("Effect of Predictor Variables"),
+        h4("Manipulate the variables below"),
+        p("Numeric result displayed at right & below fig. 1",
+                 style = "color:blue"),
+        br(),
         
         sliderInput("temp", 
                     label = "temperature (celcius)",
@@ -76,9 +83,10 @@ shinyUI(fluidPage(
       plotOutput("aprilplot"),
       br(),
       br(),
+      br(),
       wellPanel(
-        h4("Predicted Visitor Count"),
-        h4(textOutput("demo")))
+        h4("Predicted Visitor Count", style = "color:black"),
+        h4(textOutput("demo")), style = "color:blue")
     )
   ),
   
@@ -91,12 +99,14 @@ shinyUI(fluidPage(
              p("The client was interested in knowing if their visitor count was influenced by weather. After assessing a variety of weather variables, I found four that were not collinear and I used these variables to build predictive models: temperature (celcius), wind speed (mps), cloud cover (%), and rain (mm)."),
              p("Modeling of the data indicated that rain was not predictive and that wind was not informative. Therefore these variables were not included in the graphs nor models above."),
              p("The addition of temperture and percent cloud cover had a statistical affect on the visitor count.  However, temperature and cloud cover explained less than 1% of the total variance in the data.  In order to illustrate that these variables had a negliable affect on visitor count, I presented options for reviewing the predicted results without these weather variables in the model, and I also provided a method for manipulating the data in order to see the effect on the predicted visitor count."),
-             p("It should be noted that the data had difficult statistical issues and limitations. Failure to account for the following major issues (and several additional ones not listed) can result in false inference. First, the visitor count results in a Poisson distribution, so a generlized linear model was required. Second, the visitor count was heavily influenced by time of day (as a harmonic), and the day of the week. These effects were so strong that if they were included in the model as fixed effects then they swamped out any effects of the weather. To solve this problem I included these variables as random effects. Third, the data was auto-correlated and required an auto-regressive model. Fourth, the model had overdispersion, so I used a quasi-Poisson link in order to correct the coefficient estimates. Fifth, a large number of models needed to be compared (preferably with multimodel inference) and the results used to predict values in future months.  Unfortunately, in order to generate predictions, I was forced to simplify the model. Thus the results above are from a generalized linear model that has no random effects nor correlation structure (i.e. auto-regressive).")
+             p("It should be noted that the data had difficult statistical issues and limitations. Failure to account for the following major issues (and several additional ones not listed) can result in false inference. First, the visitor count results in a Poisson distribution, so a generlized linear model was required. Second, the visitor count was heavily influenced by time of day (as a harmonic), and the day of the week. These effects were so strong that if they were included in the model as fixed effects then they swamped out any effects of the weather. To solve this problem I included these variables as random effects. Third, the data was auto-correlated and required an auto-regressive model. Fourth, the model had overdispersion, so I used a quasi-Poisson link in order to correct the coefficient estimates. Fifth, a large number of models needed to be compared (preferably with multimodel inference) and the results used to predict values in future months. In order to generate predictions, I was forced to simplify the model. Thus the results above are from a generalized linear model that has no random effects nor correlation structure (i.e. auto-regressive).")
              
              )),
     
     column(4,
-           p("Figure 2. Below is a graph of the observed visitor counts from April against the predicted counts from the generalized linear model (GLM) calculated using data from January to March. This GLM was used to calculate the predicted results shown above (important note: this GLM is an approximation of the fitted model). The graph is skewed due to a variety of statistical factors discussed in the notes section to the left. The following equation was used with a Poisson distribution:"),
+           p("Figure 2. Below is a graph of the observed visitor counts from April against the predicted counts from the generalized linear model (GLM) calculated using data from January to March. This GLM was used to calculate the predicted results shown above",
+             span("Important note: this GLM is an approximation of the fitted model. Thus the graph is skewed due to a variety of statistical factors discussed in the notes section to the left. ", style = "color:red"),
+             "The following equation was used with a Poisson distribution:"),
            p("n ~ temp + %clouds + time + workday + Saturday"),
            plotOutput("obs_vs_pred_plot"))
     )  
