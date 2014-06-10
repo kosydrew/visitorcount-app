@@ -19,7 +19,7 @@ shinyUI(fluidPage(
         
         checkboxInput("n.predicted", 
                     label = "model of visitor count with weather variables",
-                    value = TRUE),
+                    value = FALSE),
         helpText("(visitor count = temp + %clouds + time + day)"),
         
         checkboxInput("n.predicted.no.weather", 
