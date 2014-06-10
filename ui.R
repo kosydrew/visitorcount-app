@@ -39,8 +39,8 @@ shinyUI(fluidPage(
                     label = h4("select dates to display"),
                     min = "2014-04-01",
                     max = "2014-04-29",
-                    start = "2014-04-01",
-                    end = "2014-04-08")
+                    start = "2014-04-02",
+                    end = "2014-04-09")
         ),
       
       wellPanel(
