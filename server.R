@@ -67,8 +67,12 @@ shinyServer(function(input, output) {
     #labels <- weekdays(time[tick], abbreviate = TRUE)
     axis(side = 1, 
          at = tick, 
-         labels = labels,
+         labels = NA,
          tick = TRUE)
+    axis(side = 1, 
+         at = (tick - 12), 
+         labels = labels,
+         tick = FALSE)
     
     if(input$clouds.obs) {
       points(apr.weather.data$p.clouds[x] ~ x, 
